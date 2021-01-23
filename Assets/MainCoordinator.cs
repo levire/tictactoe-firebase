@@ -111,6 +111,10 @@ public class MainCoordinator : MonoBehaviour
                         ShowGameStatus(status);
                     }
                 });
+                databaseService.RegisterForChatUpdates(gameId, chatState =>
+                {
+                    playingFieldPresenter.SetChatState(chatState);
+                });
             } else {
                 statusPresenter.SetStatus(StatusText.For(result), StatusPresenter.COLOR_ERROR);
             }
@@ -139,6 +143,10 @@ public class MainCoordinator : MonoBehaviour
                     if (status != StatusCode.OK && status != StatusCode.GAME_NOT_YOUR_TURN) {
                         ShowGameStatus(status);
                     }
+                });
+                databaseService.RegisterForChatUpdates(gameId, chatState =>
+                {
+                    playingFieldPresenter.SetChatState(chatState);
                 });
             } else {
                 statusPresenter.SetStatus(StatusText.For(result), StatusPresenter.COLOR_ERROR);
@@ -180,6 +188,19 @@ public class MainCoordinator : MonoBehaviour
             if (result != StatusCode.OK) {
                 ShowGameStatus(result);
             }
+        });
+    }
+
+    public void SendChatMessage(string message)
+    {
+        if (currentUser == null || currentGameId == null)
+        {
+            Debug.LogError("You are not logged in or inside a game.");
+            return;
+        }
+
+        databaseService.SendChatMessage(currentGameId, currentUser, message, result => {
+            Debug.Log("Chat message callback");
         });
     }
 

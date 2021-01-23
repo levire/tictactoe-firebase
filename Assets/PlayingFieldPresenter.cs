@@ -14,6 +14,9 @@ public class PlayingFieldPresenter : Presenter
     [SerializeField] private Text statusText;
     [SerializeField] private GameObject xIndicator;
     [SerializeField] private GameObject oIndicator;
+    [SerializeField] private Text chatWindow;
+    [SerializeField] private InputField chatMessage;
+    [SerializeField] private Button sendChatMessageButton;
 
     Color xColor = new Color(0.07465164f, 0.06786222f, 0.5754717f, 1.0f);
     Color oColor = new Color(0.6981132f, 0.0f, 0.006702666f, 1.0f);
@@ -91,8 +94,27 @@ public class PlayingFieldPresenter : Presenter
             }
         }
     }
+
+    public void SetChatState(ChatState chatState)
+    {
+        string messages = "";
+        foreach (string message in chatState.ChatMessages)
+        {
+            messages += message + "\n";
+        }
+        chatWindow.text = messages;
+        Debug.Log("Setting chat to: " + messages);
+    }
+
     public void OnGiveUp()
     {
         coordinator.LeaveGame();
+    }
+
+    public void OnSendChat()
+    {
+        Debug.Log("Send chat message handler");
+        coordinator.SendChatMessage(chatMessage.text);
+        chatMessage.text = "";
     }
 }

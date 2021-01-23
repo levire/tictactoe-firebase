@@ -95,6 +95,17 @@ public class DatabaseService : MonoBehaviour
                 completion(StatusCode.UNKNWON, null);
             }
         });
+
+        db.Collection("chats").Document(gameId).SetAsync(new ChatState(gameId, new List<string>())).ContinueWithOnMainThread(task => {
+            if (task.IsCompleted)
+            {
+                completion(StatusCode.OK, gameId);
+            }
+            else
+            {
+                completion(StatusCode.UNKNWON, null);
+            }
+        });
     }
 
     public void JoinGame(string username, string gameId, Action<StatusCode> completion)
@@ -192,6 +203,10 @@ public class DatabaseService : MonoBehaviour
                 if (_gameUpdateListener != null) {
                     _gameUpdateListener.Stop();
                 }
+                if (_chatUpdateListener != null)
+                {
+                    _chatUpdateListener.Stop();
+                }
                 transaction.Delete(gameRef);
             } else {
                 transaction.Set(gameRef, gameState);
@@ -200,6 +215,39 @@ public class DatabaseService : MonoBehaviour
             return true;
         }).ContinueWithOnMainThread(taks => {
             completion(transactionStatus);
+        });
+    }
+
+    public void SendChatMessage(string gameId, string message, string username, Action<StatusCode> completion)
+    {
+        DocumentReference chatRef = db.Collection("chats").Document(gameId);
+        StatusCode transactionStatus = StatusCode.OK;
+        db.RunTransactionAsync(async transaction => {
+            DocumentSnapshot chat = await transaction.GetSnapshotAsync(chatRef);
+
+            if (!chat.Exists)
+            {
+                transactionStatus = StatusCode.UNKNWON;
+                return false;
+            }
+
+            ChatState chatState = chat.ConvertTo<ChatState>();
+            chatState.AddMessage(username, message);
+
+            transaction.Set(chatRef, chatState);
+            return true;
+        
+        }).ContinueWithOnMainThread(task => {
+            completion(transactionStatus);
+        });
+    }
+
+    private ListenerRegistration _chatUpdateListener = null;
+    public void RegisterForChatUpdates(string gameId, Action<ChatState> callback)
+    {
+        Debug.Log("Registering for Chat " + gameId);
+        _chatUpdateListener = db.Collection("chats").Document(gameId).Listen(snapshot => {
+            callback(snapshot.ConvertTo<ChatState>());
         });
     }
 
