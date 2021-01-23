@@ -16,7 +16,7 @@ public class DatabaseService : MonoBehaviour
 
     void Start()
     {
-        StreamReader reader = new StreamReader("Assets/google-services.json");
+        StreamReader reader = new StreamReader(Application.streamingAssetsPath + "/google-services-desktop.json");
         AppOptions options = AppOptions.LoadFromJsonConfig(reader.ReadToEnd());
         reader.Close();
 
