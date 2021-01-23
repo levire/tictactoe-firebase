@@ -1,0 +1,14 @@
+﻿public enum StatusCode
+{
+    OK,
+    CREDENTIALS_WRONG,
+    USER_ALREADY_EXISTS,
+    GAME_ID_UNKNOWN,
+    GAME_FULL,
+    GAME_NOT_YOUR_TURN,
+    GAME_YOU_WIN,
+    GAME_YOU_LOST,
+    GAME_FIELD_ALREADY_FULL,
+    GAME_DRAW,
+    UNKNWON
+}
