@@ -48,7 +48,6 @@ public class PlayingFieldPresenter : Presenter
         for (int i = 0; i < 9; i++) {
             int buttonIndex = i;
             buttons[i].onClick.AddListener(() => {
-                Debug.Log("Clicked button " + buttonIndex);
                 coordinator.MakeMove(buttonIndex);
             });
         }
@@ -103,7 +102,6 @@ public class PlayingFieldPresenter : Presenter
             messages += message + "\n";
         }
         chatWindow.text = messages;
-        Debug.Log("Setting chat to: " + messages);
     }
 
     public void OnGiveUp()
@@ -113,7 +111,6 @@ public class PlayingFieldPresenter : Presenter
 
     public void OnSendChat()
     {
-        Debug.Log("Send chat message handler");
         coordinator.SendChatMessage(chatMessage.text);
         chatMessage.text = "";
     }

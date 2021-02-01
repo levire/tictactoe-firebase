@@ -200,7 +200,7 @@ public class MainCoordinator : MonoBehaviour
         }
 
         databaseService.SendChatMessage(currentGameId, currentUser, message, result => {
-            Debug.Log("Chat message callback");
+            statusPresenter.SetStatus("Message send", StatusPresenter.COLOR_NOTICE);
         });
     }
 

@@ -203,8 +203,7 @@ public class DatabaseService : MonoBehaviour
                 if (_gameUpdateListener != null) {
                     _gameUpdateListener.Stop();
                 }
-                if (_chatUpdateListener != null)
-                {
+                if (_chatUpdateListener != null) {
                     _chatUpdateListener.Stop();
                 }
                 transaction.Delete(gameRef);
@@ -225,8 +224,7 @@ public class DatabaseService : MonoBehaviour
         db.RunTransactionAsync(async transaction => {
             DocumentSnapshot chat = await transaction.GetSnapshotAsync(chatRef);
 
-            if (!chat.Exists)
-            {
+            if (!chat.Exists) {
                 transactionStatus = StatusCode.UNKNWON;
                 return false;
             }
