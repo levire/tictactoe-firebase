@@ -14,8 +14,8 @@ public class PlayingFieldPresenter : Presenter
     [SerializeField] private Text statusText;
     [SerializeField] private GameObject xIndicator;
     [SerializeField] private GameObject oIndicator;
-    [SerializeField] private Text chatWindow;
-    [SerializeField] private InputField chatMessage;
+    [SerializeField] private Text chatMessagesText;
+    [SerializeField] private InputField chatMessageInputField;
     [SerializeField] private Button sendChatMessageButton;
 
     Color xColor = new Color(0.07465164f, 0.06786222f, 0.5754717f, 1.0f);
@@ -40,6 +40,9 @@ public class PlayingFieldPresenter : Presenter
         playerOText.text = "";
 
         SetGameId("");
+
+        sendChatMessageButton.enabled = false;
+        chatMessageInputField.text = "";
     }
     void Update()
     {
@@ -106,7 +109,7 @@ public class PlayingFieldPresenter : Presenter
         foreach (string message in chatState.ChatMessages) {
             messages += message + "\n";
         }
-        chatWindow.text = messages;
+        chatMessagesText.text = messages;
     }
 
     public void OnGiveUp()
@@ -116,7 +119,12 @@ public class PlayingFieldPresenter : Presenter
 
     public void OnSendChat()
     {
-        coordinator.SendChatMessage(chatMessage.text);
-        chatMessage.text = "";
+        coordinator.SendChatMessage(chatMessageInputField.text);
+        chatMessageInputField.text = "";
+    }
+
+    public void OnChatMessageInputChanged()
+    {
+        sendChatMessageButton.enabled = chatMessageInputField.text.Length > 1;
     }
 }
