@@ -41,6 +41,12 @@ public class PlayingFieldPresenter : Presenter
 
         SetGameId("");
     }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return) && sendChatMessageButton.enabled) {
+            OnSendChat();
+        }
+    }
 
     private void InitFieldClickHandler()
     {
