@@ -6,7 +6,7 @@ public class CreateOrJoinGamePresenter : Presenter
     private MainCoordinator coordinator;
     [SerializeField] private InputField gameIdInputField;
     [SerializeField] private Button joinActionButton;
-    
+
     void Start()
     {
         coordinator = GetComponentInParent<MainCoordinator>();

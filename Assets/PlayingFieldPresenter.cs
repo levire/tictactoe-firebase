@@ -97,8 +97,7 @@ public class PlayingFieldPresenter : Presenter
     public void SetChatState(ChatState chatState)
     {
         string messages = "";
-        foreach (string message in chatState.ChatMessages)
-        {
+        foreach (string message in chatState.ChatMessages) {
             messages += message + "\n";
         }
         chatWindow.text = messages;

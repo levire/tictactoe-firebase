@@ -230,7 +230,7 @@ public class DatabaseService : MonoBehaviour
 
             transaction.Set(chatRef, chatState);
             return true;
-        
+
         }).ContinueWithOnMainThread(task => {
             completion(transactionStatus);
         });
