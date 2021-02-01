@@ -217,7 +217,7 @@ public class DatabaseService : MonoBehaviour
         });
     }
 
-    public void SendChatMessage(string gameId, string message, string username, Action<StatusCode> completion)
+    public void SendChatMessage(string gameId, string username, string message, Action<StatusCode> completion)
     {
         DocumentReference chatRef = db.Collection("chats").Document(gameId);
         StatusCode transactionStatus = StatusCode.OK;

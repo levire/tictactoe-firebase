@@ -24,6 +24,6 @@ public class ChatState
 
     public void AddMessage(string userName, string message)
     {
-        ChatMessages.Add(userName + " - " + message);
+        ChatMessages.Add(userName + ": " + message);
     }
 }
