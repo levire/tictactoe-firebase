@@ -88,21 +88,17 @@ public class DatabaseService : MonoBehaviour
         }
 
         string gameId = CreateGameID();
-        db.Collection("games").Document(gameId).SetAsync(new GameState(username, gameId)).ContinueWithOnMainThread(task => {
-            if (task.IsCompleted) {
-                completion(StatusCode.OK, gameId);
-            } else {
-                completion(StatusCode.UNKNWON, null);
-            }
-        });
+        db.Collection("games").Document(gameId).SetAsync(new GameState(username, gameId)).ContinueWithOnMainThread(createGameTask => {
 
-        db.Collection("chats").Document(gameId).SetAsync(new ChatState(gameId, new List<string>())).ContinueWithOnMainThread(task => {
-            if (task.IsCompleted)
-            {
-                completion(StatusCode.OK, gameId);
-            }
-            else
-            {
+            if (createGameTask.IsCompleted) {
+                db.Collection("chats").Document(gameId).SetAsync(new ChatState(gameId, new List<string>())).ContinueWithOnMainThread(createChatTask => {
+                    if (createChatTask.IsCompleted) {
+                        completion(StatusCode.OK, gameId);
+                    } else {
+                        completion(StatusCode.UNKNWON, null);
+                    }
+                });
+            } else {
                 completion(StatusCode.UNKNWON, null);
             }
         });
