@@ -195,13 +195,15 @@ public class DatabaseService : MonoBehaviour
                 gameState.PlayerO = null;
             }
 
+            if (_gameUpdateListener != null) {
+                _gameUpdateListener.Stop();
+            }
+
+            if (_chatUpdateListener != null) {
+                _chatUpdateListener.Stop();
+            }
+
             if (gameState.IsEmpty) {
-                if (_gameUpdateListener != null) {
-                    _gameUpdateListener.Stop();
-                }
-                if (_chatUpdateListener != null) {
-                    _chatUpdateListener.Stop();
-                }
                 transaction.Delete(gameRef);
             } else {
                 transaction.Set(gameRef, gameState);
